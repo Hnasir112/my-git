@@ -27,9 +27,12 @@ func saveChanges(message string) {
 	}
 
 	fmt.Printf("Pushing to remote...")
-	if err := runCommand("git", "push"); err != nil {
-		fmt.Printf("Error pushing changes: %v\n", err)
-		return
+	err := runCommand("git", "push")
+	if err != nil {
+		if err := runCommand("git", "push", "u", "origin", "main"); err != nil {
+			fmt.Printf("Error pushing changes: %v\n", err)
+			return
+		}
 	}
 
 	fmt.Println("Done!")
